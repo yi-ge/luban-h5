@@ -73,6 +73,66 @@
 2. 后端
      1. 后端 API 部分请参照 [`project/back-end/h5-api/README.md`](https://github.com/ly525/luban-h5/blob/dev/back-end/h5-api/README.md)
 
+#### Docker 部署
+
+请确保您的`80`端口和`443`端口均打开，如果已经配置了其它项目，请进行手工调整。
+
+1. 修改`yourdomain.tld`为您的前端域名并解析到服务器。
+2. 修改`api.yourdomain.tld`为您的后端域名并解析到服务器。
+3. 依次执行以下命令。
+
+```bash
+# Clone luban-h5
+
+git clone https://github.com/ly525/luban-h5.git
+cd luban-h5
+
+# Install require package
+docker run --rm -v `pwd`:/root -w /root/back-end/h5-api node:12.8.1 bash -c "yarn && yarn build"
+docker run --rm -v `pwd`:/root -w /root/front-end/h5 node:12.8.1 bash -c "yarn && yarn build && node build/engine-webpack.js"
+
+# Start back-end
+docker run --detach \
+    --name nginx-proxy \
+    --publish 80:80 \
+    --publish 443:443 \
+    --volume /etc/nginx/certs \
+    --volume /etc/nginx/vhost.d \
+    --volume /usr/share/nginx/html \
+    --volume /var/run/docker.sock:/tmp/docker.sock:ro \
+    jwilder/nginx-proxy
+
+docker run --detach \
+    --name nginx-proxy-letsencrypt \
+    --volumes-from nginx-proxy \
+    --volume /var/run/docker.sock:/var/run/docker.sock:ro \
+    jrcs/letsencrypt-nginx-proxy-companion
+
+docker run -itd -m 512m \
+    --restart=always \
+    --name luban-h5-front \
+    -v `pwd`/front-end/h5/dist:/usr/share/nginx/html \
+    --env "PUBLIC_PATH=/" \
+    --env "VIRTUAL_HOST=yourdomain.tld" \
+    --env "LETSENCRYPT_HOST=yourdomain.tld" \
+    --env "PROD_API_ORIGIN=api.yourdomain.tld" \
+    nginx
+
+# Start font-end
+docker run -itd -m 1024m \
+    --name luban-h5-api \
+    --restart=always \
+    -v `pwd`:/root -w /root/back-end/h5-api \
+    --env "VIRTUAL_PORT=1337" \
+    --env "VIRTUAL_HOST=api.yourdomain.tld" \
+    --env "LETSENCRYPT_HOST=api.yourdomain.tld" \
+   --restart=always node:12.8.1 \
+   yarn start
+```
+
+访问`https://你的域名`，部署完成。
+
+关于Nginx、SSL的配置，可以参考：https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
 
 ### 更多说明
 #### 前端组件说明
