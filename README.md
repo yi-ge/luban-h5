@@ -132,7 +132,7 @@ docker run -itd -m 1024m \
    yarn start
 ```
 
-访问`https://你的域名`，部署完成。
+稍等片刻，访问`https://你的域名`，部署完成。
 
 关于Nginx、SSL的配置，可以参考：https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
 
