@@ -90,7 +90,6 @@ cd luban-h5
 # Install require package
 docker run --rm -v `pwd`:/root -w /root/back-end/h5-api node:12.8.1 bash -c "yarn && yarn build"
 docker run --rm -v `pwd`:/root -w /root/front-end/h5 \
-    --env "NODE_ENV=production" \
     --env "PUBLIC_PATH=/" \
     --env "PROD_API_ORIGIN=api.yourdomain.tld" \
     node:12.8.1 bash -c "yarn && yarn build && node build/engine-webpack.js"
