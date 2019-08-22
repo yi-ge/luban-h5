@@ -10,12 +10,12 @@ module.exports = {
   // 因为需要部署到 github pages，所以需要将 publicPath 设为 "/< GitHub Repo Name>/"
   publicPath: isProd ? (process.env.PUBLIC_PATH || '/luban-h5/') : '/',
   productionSourceMap: false,
-  devServer: isProd ? null : {
+  devServer: {
     // proxy: API_ORIGIN
-    proxy: {
+    proxy: isProd ? null : {
       '/works': {
         // agent: new ProxyAgent('socks5://127.0.0.1:1086'),
-        target: isProd ? PROD_API_ORIGIN : DEV_API_ORIGIN,
+        target: DEV_API_ORIGIN,
         changeOrigin: true,
         ws: false
       }
