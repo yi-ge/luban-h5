@@ -1,3 +1,5 @@
+import { API_ORIGIN } from '../../constants/api.js'
+
 export default {
   render () {
     const {
@@ -111,7 +113,7 @@ export default {
       // #!zh: vuex.module.editor.setWork 中定义
       const workId = window.__work.id
       // TODO #!zh: 可以动态配置表单提交地址
-      req.open('post', `/works/form/submit/${workId}`, true)
+      req.open('post', `${API_ORIGIN}/works/form/submit/${workId}`, true)
       req.send(formData)
     }
   },

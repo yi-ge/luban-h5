@@ -115,6 +115,7 @@ docker run -itd -m 512m \
     --restart=always \
     --name luban-h5-front \
     -v `pwd`/front-end/h5/dist:/usr/share/nginx/html \
+    --env "NODE_ENV=production" \
     --env "VIRTUAL_HOST=yourdomain.tld" \
     --env "LETSENCRYPT_HOST=yourdomain.tld" \
     --env "PROD_API_ORIGIN=api.yourdomain.tld" \
