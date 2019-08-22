@@ -125,7 +125,8 @@ docker run -itd -m 1024m \
     --name luban-h5-api \
     --restart=always \
     -v `pwd`:/root -w /root/back-end/h5-api \
-    --env "VIRTUAL_PORT=1337" \
+    --env "HOST=0.0.0.0" \
+    --env "PORT=80" \
     --env "VIRTUAL_HOST=api.yourdomain.tld" \
     --env "LETSENCRYPT_HOST=api.yourdomain.tld" \
    --restart=always node:12.8.1 \
