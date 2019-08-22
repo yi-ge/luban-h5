@@ -89,7 +89,11 @@ cd luban-h5
 
 # Install require package
 docker run --rm -v `pwd`:/root -w /root/back-end/h5-api node:12.8.1 bash -c "yarn && yarn build"
-docker run --rm -v `pwd`:/root -w /root/front-end/h5 node:12.8.1 bash -c "yarn && yarn build && node build/engine-webpack.js"
+docker run --rm -v `pwd`:/root -w /root/front-end/h5 \
+    --env "NODE_ENV=production" \
+    --env "PUBLIC_PATH=/" \
+    --env "PROD_API_ORIGIN=api.yourdomain.tld" \
+    node:12.8.1 bash -c "yarn && yarn build && node build/engine-webpack.js"
 
 # Start back-end
 docker run --detach \
@@ -112,7 +116,6 @@ docker run -itd -m 512m \
     --restart=always \
     --name luban-h5-front \
     -v `pwd`/front-end/h5/dist:/usr/share/nginx/html \
-    --env "PUBLIC_PATH=/" \
     --env "VIRTUAL_HOST=yourdomain.tld" \
     --env "LETSENCRYPT_HOST=yourdomain.tld" \
     --env "PROD_API_ORIGIN=api.yourdomain.tld" \
