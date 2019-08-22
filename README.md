@@ -92,7 +92,7 @@ docker run --rm -v `pwd`:/root -w /root/back-end/h5-api node:12.8.1 bash -c "yar
 docker run --rm -v `pwd`:/root -w /root/front-end/h5 \
     --env "PUBLIC_PATH=/" \
     --env "PROD_API_ORIGIN=api.yourdomain.tld" \
-    node:12.8.1 bash -c "yarn && yarn build && node build/engine-webpack.js"
+    node:12.8.1 bash -c "yarn && yarn build && node build/engine.webpack.js"
 
 # Start back-end
 docker run --detach \
