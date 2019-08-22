@@ -83,12 +83,12 @@
 
 ```bash
 # Clone luban-h5
-
 git clone https://github.com/ly525/luban-h5.git
 cd luban-h5
 
 # Install require package
 docker run --rm -v `pwd`:/root -w /root/back-end/h5-api node:12.8.1 bash -c "yarn && NODE_ENV=production yarn build"
+
 docker run --rm -v `pwd`:/root -w /root/front-end/h5 \
     --env "PUBLIC_PATH=/" \
     --env "PROD_API_ORIGIN=api.yourdomain.tld" \
@@ -126,8 +126,7 @@ docker run -itd -m 1024m \
     --restart=always \
     -v `pwd`:/root -w /root/back-end/h5-api \
     --env "NODE_ENV=production" \
-    --env "HOST=0.0.0.0" \
-    --env "PORT=80" \
+    --env "VIRTUAL_PORT=1337" \
     --env "VIRTUAL_HOST=api.yourdomain.tld" \
     --env "LETSENCRYPT_HOST=api.yourdomain.tld" \
    --restart=always node:12.8.1 \
